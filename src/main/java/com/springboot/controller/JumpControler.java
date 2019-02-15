@@ -6,9 +6,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Slf4j
 @Controller
-public class DemoControler {
-    @GetMapping(value = "/toDemo")
-    public String toDemo() throws Exception {
-        return "demo";
+public class JumpControler {
+    @GetMapping(value = "/toMessageSend")
+    public String toMessageSend() throws Exception {
+        return "messageSend";
     }
 }

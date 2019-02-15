@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+    <b>你好啊</b>
+</body>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    //初始化一个 WebSocket 对象
+    var ws = new WebSocket("ws://localhost:8080/ws/messageSend");
+
+    //建立 web socket 连接成功触发事件
+    ws.onopen = function () {
+        // 使用 send() 方法发送数据
+        ws.send("你好服务端！");
+    };
+
+    //接收服务端数据时触发事件
+    ws.onmessage = function (evt) {
+        alert("接收到服务器消息：" + evt.data);
+    };
+
+    //断开 web socket 连接成功触发事件
+    ws.onclose = function () {
+        alert("链接已关闭！");
+    };
+    /*]]>*/
+</script>
+</html>
