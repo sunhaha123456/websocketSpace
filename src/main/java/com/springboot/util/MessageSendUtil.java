@@ -1,11 +1,13 @@
 package com.springboot.util;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
 
 import javax.websocket.Session;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+@Slf4j
 public class MessageSendUtil {
 
     //J.U.C包下线程安全的类，主要用来存放每个客户端对应的webSocket连接
@@ -20,7 +22,7 @@ public class MessageSendUtil {
                     session = entry.getKey();
                     session.getBasicRemote().sendText(message);
                 } catch (Exception e) {
-                    System.out.println("群发消息错误，报错session：" + session.getId() + "，错误信息：" + e);
+                    log.error("群发消息错误，报错session：" + session.getId() + "，错误信息：" + e);
                 }
             }
         }
@@ -33,7 +35,7 @@ public class MessageSendUtil {
             }
             websocketMap.remove(session);
         } catch (Exception e) {
-            System.out.println("关闭session报错，报错session：" + session.getId() + "，错误信息：" + e);
+            log.error("关闭session报错，报错session：" + session.getId() + "，错误信息：" + e);
         }
     }
 }
