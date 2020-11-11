@@ -57,7 +57,7 @@ public class Application {
 	 * @return
 	 */
 	@Bean
-	MessageListenerAdapter CatAdapter() {
+	MessageListenerAdapter catAdapter() {
 		return new MessageListenerAdapter(new CatListener());
 	}
 
@@ -66,7 +66,7 @@ public class Application {
 	 * @return
 	 */
 	@Bean
-	MessageListenerAdapter FishAdapter() {
+	MessageListenerAdapter fishAdapter() {
 		return new MessageListenerAdapter(new FishListener());
 	}
 }

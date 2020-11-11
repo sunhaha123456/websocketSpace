@@ -1,32 +1,39 @@
 package com.springboot.util;
 
+import org.springframework.util.StringUtils;
+
 import javax.websocket.Session;
-import java.util.concurrent.CopyOnWriteArraySet;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class MessageSendUtil {
 
     //J.U.C包下线程安全的类，主要用来存放每个客户端对应的webSocket连接
-    public static CopyOnWriteArraySet<Session> websocketSet = new CopyOnWriteArraySet<Session>();
+    public static ConcurrentHashMap<Session, Object> websocketMap = new ConcurrentHashMap<Session, Object>();
 
     // 群发消息
     public static void sendMessageAll(String message) {
-        for (Session session : websocketSet) {
-            try {
-                session.getBasicRemote().sendText("sessionId：" + session.getId() + "，发送消息：" + message);
-            } catch (Exception e) {
-                System.out.println("群发消息错误，错误信息：" + e);
+        if (!StringUtils.isEmpty(message)) {
+            Session session = null;
+            for (Map.Entry<Session, Object> entry : websocketMap.entrySet()) {
+                try {
+                    session = entry.getKey();
+                    session.getBasicRemote().sendText(message);
+                } catch (Exception e) {
+                    System.out.println("群发消息错误，报错session：" + session.getId() + "，错误信息：" + e);
+                }
             }
         }
     }
 
     public static void closeSession(Session session) {
         try {
-            if (session != null && !session.isOpen()) {
+            if (session != null) {
                 session.close();
-                websocketSet.remove(session);
             }
+            websocketMap.remove(session);
         } catch (Exception e) {
-            System.out.println("websocket 关闭 session报错，错误信息：" + e);
+            System.out.println("关闭session报错，报错session：" + session.getId() + "，错误信息：" + e);
         }
     }
 }

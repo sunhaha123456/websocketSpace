@@ -13,8 +13,8 @@ public class MessageSendWebsocket {
     // 功能：打开连接。进入页面后会自动发请求到此进行连接
     @OnOpen
     public void onOpen(Session session) {
-        MessageSendUtil.websocketSet.add(session);
-        System.out.println("websocket有新的链接，sessionId：" + session.getId() + "，总链接数变为：" + MessageSendUtil.websocketSet.size());
+        MessageSendUtil.websocketMap.put(session, session.getId());
+        System.out.println("websocket有新的链接，sessionId：" + session.getId() + "，总链接数变为：" + MessageSendUtil.websocketMap.size());
     }
 
     // 功能：用户关闭页面（即关闭连接）时触发
@@ -22,7 +22,7 @@ public class MessageSendWebsocket {
     public void onClose(Session session) {
         try {
             MessageSendUtil.closeSession(session);
-            System.out.println("websocket有链接断开，sessionId：" + session.getId() + "，总链接数变为：" + MessageSendUtil.websocketSet.size());
+            System.out.println("websocket有链接断开，sessionId：" + session.getId() + "，总链接数变为：" + MessageSendUtil.websocketMap.size());
         } catch (Exception e) {
             System.out.println("websocket关闭链接时发生错误，错误信息：" + e);
         }
