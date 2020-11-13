@@ -36,6 +36,13 @@ public class MessageSendWebsocket {
         log.info("sessionId：" + session.getId() + "，接受到消息：" + message);
     }
 
+    /**
+     * 功能：异常信息处理
+     * 备注：比如，使用 ng 做 ws 集群负载时，在未做心跳情况下，容易导致 ng 自身超时，
+     *      当 ng 链接超时，会导致触发该方法，并报 java.io.EOFException，并在此后，触发 onClose 方法，关闭该 session
+     * @param session
+     * @param error
+     */
     @OnError
     public void onError(Session session, Throwable error) {
         log.info("sessionId：" + session.getId() + "，发生错误，错误信息：" + error);
